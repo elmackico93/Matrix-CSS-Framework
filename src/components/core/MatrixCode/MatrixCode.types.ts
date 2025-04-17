@@ -1,4 +1,3 @@
-
 import { HTMLAttributes } from 'react';
 
 /**
@@ -32,10 +31,13 @@ export type BarcodeFormat =
 
 /**
  * Properties for the MatrixCode component
+ * @interface MatrixCodeProps
+ * @extends {HTMLAttributes<HTMLDivElement>}
  */
 export interface MatrixCodeProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * The data to encode in the code (URL, text, etc.)
+   * @required
    */
   data: string;
   

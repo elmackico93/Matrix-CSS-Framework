@@ -1,9 +1,8 @@
-
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act, waitFor } from '@testing-library/react';
 import { MatrixCode } from './MatrixCode';
 
-// Mock the dynamic imports
+// Mock the libraries used
 jest.mock('qrcode', () => ({
   toCanvas: jest.fn().mockImplementation((canvas, data, options) => {
     return Promise.resolve();
@@ -12,97 +11,191 @@ jest.mock('qrcode', () => ({
 
 jest.mock('jsbarcode', () => ({
   __esModule: true,
-  default: jest.fn().mockImplementation((canvas, data, options) => {
-    // Mock implementation
+  default: jest.fn().mockImplementation((selector, data, options) => {
+    // Create mock SVG content to simulate how JSBarcode works
+    const element = document.querySelector(selector);
+    if (element) {
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('width', '100');
+      rect.setAttribute('height', '30');
+      rect.setAttribute('fill', options.lineColor || '#000000');
+      element.appendChild(rect);
+      
+      // Add text element if displayValue is true
+      if (options.displayValue) {
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.textContent = data;
+        text.setAttribute('x', '50');
+        text.setAttribute('y', '50');
+        element.appendChild(text);
+      }
+    }
   })
 }));
 
+// Mock requestAnimationFrame and cancelAnimationFrame
+global.requestAnimationFrame = jest.fn((callback) => {
+  return setTimeout(callback, 0);
+}) as any;
+
+global.cancelAnimationFrame = jest.fn((id) => {
+  clearTimeout(id);
+}) as any;
+
 describe('MatrixCode Component', () => {
-  test('renders with default props', () => {
-    render(<MatrixCode data="https://example.com" />);
-    
-    // Should have a canvas element
-    expect(document.querySelector('canvas')).toBeInTheDocument();
-    
-    // Should have Matrix styles
-    const container = document.querySelector('div');
-    expect(container).toHaveClass('border-2');
-    expect(container).toHaveClass('border-matrix-border');
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
   
-  test('shows error state when no data is provided', () => {
+  it('renders with default props', async () => {
+    render(<MatrixCode data="https://example.com" />);
+    
+    // Wait for code generation
+    await waitFor(() => {
+      const container = screen.getByRole('img');
+      expect(container).toBeInTheDocument();
+      expect(container).toHaveAttribute('aria-label', 'QR code containing: https://example.com');
+    });
+  });
+  
+  it('renders a QR code by default', async () => {
+    render(<MatrixCode data="https://example.com" />);
+    
+    // Check if QRCode.toCanvas was called
+    await waitFor(() => {
+      expect(require('qrcode').toCanvas).toHaveBeenCalled();
+    });
+  });
+  
+  it('renders a barcode when type is set to barcode', async () => {
+    render(<MatrixCode data="1234567890" type="barcode" />);
+    
+    // Check if JsBarcode was called
+    await waitFor(() => {
+      expect(require('jsbarcode').default).toHaveBeenCalled();
+    });
+  });
+  
+  it('shows an error message when no data is provided', async () => {
     // @ts-ignore - Intentionally passing empty data for test
     render(<MatrixCode data="" />);
     
-    expect(screen.getByText('No data provided')).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText(/Error: No data provided/i)).toBeInTheDocument();
+    });
   });
   
-  test('applies glow effect when enabled', () => {
-    render(<MatrixCode data="https://example.com" hasGlowEffect />);
+  it('applies visual effects when enabled', async () => {
+    render(
+      <MatrixCode 
+        data="https://example.com" 
+        hasGlowEffect 
+        hasGlitchEffect 
+        hasPulseEffect 
+      />
+    );
     
-    const container = document.querySelector('div');
-    expect(container).toHaveClass('shadow-[0_0_15px_var(--matrix-glow)]');
+    await waitFor(() => {
+      const container = screen.getByRole('img');
+      const className = container.className;
+      
+      expect(className).toContain('shadow-lg');  // glow effect
+      expect(className).toContain('animate-glitch');  // glitch effect
+      expect(className).toContain('animate-pulse');  // pulse effect
+    });
   });
   
-  test('applies glitch animation when enabled', () => {
-    render(<MatrixCode data="https://example.com" hasGlitchEffect />);
-    
-    const container = document.querySelector('div');
-    expect(container).toHaveClass('animate-glitch');
-  });
-  
-  test('applies pulse animation when enabled', () => {
-    render(<MatrixCode data="https://example.com" hasPulseEffect />);
-    
-    const container = document.querySelector('div');
-    expect(container).toHaveClass('animate-pulse');
-  });
-  
-  test('renders scan line when enabled', () => {
+  it('renders scan line effect when enabled', async () => {
     render(<MatrixCode data="https://example.com" hasScanlineEffect />);
     
-    // Should have scan line element
-    const scanLine = document.querySelector('.animate-scanline');
-    expect(scanLine).toBeInTheDocument();
+    await waitFor(() => {
+      const scanLine = document.querySelector('.animate-terminal-scan');
+      expect(scanLine).toBeInTheDocument();
+    });
   });
   
-  test('renders barcode with correct dimensions', () => {
-    render(<MatrixCode data="1234567890" type="barcode" size={200} />);
+  it('uses custom size when provided', async () => {
+    const customSize = 300;
+    render(<MatrixCode data="https://example.com" size={customSize} />);
     
-    const container = document.querySelector('div');
-    // Barcode should have wider width than height
-    expect(container?.style.width).toBe('240px'); // 200 * 1.2
-    expect(container?.style.height).toBe('160px'); // 200 * 0.8
+    await waitFor(() => {
+      const container = screen.getByRole('img');
+      expect(container.style.width).toBe(`${customSize}px`);
+      expect(container.style.height).toBe(`${customSize}px`);
+    });
   });
   
-  test('applies custom className', () => {
-    render(<MatrixCode data="https://example.com" className="custom-class" />);
+  it('adjusts height for barcode type', async () => {
+    const size = 200;
+    render(<MatrixCode data="1234567890" type="barcode" size={size} />);
     
-    const container = document.querySelector('div');
-    expect(container).toHaveClass('custom-class');
+    await waitFor(() => {
+      const container = screen.getByRole('img');
+      expect(container.style.height).toBe(`${size * 0.6}px`);
+    });
   });
   
-  test('calls onGenerated callback when code is generated', async () => {
+  it('calls onGenerated callback after successful generation', async () => {
     const onGenerated = jest.fn();
     
     render(<MatrixCode data="https://example.com" onGenerated={onGenerated} />);
     
-    // Wait for the code to be generated
-    await new Promise(resolve => setTimeout(resolve, 0));
-    
-    expect(onGenerated).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(onGenerated).toHaveBeenCalledTimes(1);
+    });
   });
   
-  test('calls onError callback when an error occurs', async () => {
+  it('calls onError callback when an error occurs', async () => {
     const onError = jest.fn();
     
-    // @ts-ignore - Intentionally passing empty data for test
-    render(<MatrixCode data="" onError={onError} />);
+    // Mock QRCode.toCanvas to throw an error
+    require('qrcode').toCanvas.mockImplementationOnce(() => {
+      throw new Error('Test error');
+    });
     
-    // Wait for the error to be caught
-    await new Promise(resolve => setTimeout(resolve, 0));
+    render(<MatrixCode data="https://example.com" onError={onError} />);
     
-    expect(onError).toHaveBeenCalledTimes(1);
-    expect(onError).toHaveBeenCalledWith(expect.any(Error));
+    await waitFor(() => {
+      expect(onError).toHaveBeenCalledWith(expect.any(Error));
+    });
+  });
+  
+  it('applies custom className', async () => {
+    render(<MatrixCode data="https://example.com" className="custom-test-class" />);
+    
+    await waitFor(() => {
+      const container = screen.getByRole('img');
+      expect(container.className).toContain('custom-test-class');
+    });
+  });
+  
+  it('passes additional HTML attributes to the container', async () => {
+    render(
+      <MatrixCode 
+        data="https://example.com" 
+        data-testid="matrix-code"
+        title="Test QR Code"
+      />
+    );
+    
+    await waitFor(() => {
+      const container = screen.getByTestId('matrix-code');
+      expect(container).toHaveAttribute('title', 'Test QR Code');
+    });
+  });
+  
+  it('cleans up animations when unmounted', async () => {
+    const { unmount } = render(
+      <MatrixCode data="https://example.com" hasCodeRain />
+    );
+    
+    // Wait for code generation
+    await waitFor(() => {
+      expect(global.requestAnimationFrame).toHaveBeenCalled();
+    });
+    
+    // Unmount and check cleanup
+    unmount();
+    expect(global.cancelAnimationFrame).toHaveBeenCalled();
   });
 });
