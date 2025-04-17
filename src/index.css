@@ -1,0 +1,90 @@
+/* Tailwind directives - must be at the top */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import fonts */
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap');
+
+/* Matrix CSS variables */
+:root {
+  /* Core colors */
+  --m-black: #000000;
+  --m-bg: #0c0c0c;
+  --m-text: #00ff41; /* Matrix green */
+  --m-text-dim: #0a3f0a;
+  --m-text-bright: #00ff97;
+  --m-text-white: #ffffff;
+  --m-glow: rgba(0, 255, 65, 0.6);
+  --m-panel: #0f0f0f;
+  --m-border: #143214;
+  --m-overlay: rgba(0, 10, 0, 0.8);
+  
+  /* Functional colors */
+  --m-primary: #00ff41;
+  --m-secondary: #072707;
+  --m-info: #39a0ed;
+  --m-success: #00ff41;
+  --m-warning: #ffe100;
+  --m-danger: #ff2222;
+  --m-light: #1d1d1d;
+  --m-dark: #030303;
+  
+  /* Typography */
+  --m-font-main: 'Courier New', monospace;
+  --m-font-alt: 'Share Tech Mono', 'Lucida Console', Monaco, monospace;
+  --m-font-hacker: 'VT323', monospace;
+  --m-font-size: 16px;
+  --m-line-height: 1.6;
+  
+  /* Spacing */
+  --m-space-xs: 0.25rem;
+  --m-space-sm: 0.5rem;
+  --m-space-md: 1rem;
+  --m-space-lg: 1.5rem;
+  --m-space-xl: 2.5rem;
+  
+  /* Timing */
+  --m-time-fast: 0.2s;
+  --m-time-med: 0.5s;
+  --m-time-slow: 1s;
+  
+  /* Effects */
+  --m-shadow: 0 0 10px var(--m-glow);
+  --m-radius: 3px;
+  
+  /* Grid */
+  --m-cols: 12;
+  --m-gap: 20px;
+  --m-container-width: 1200px;
+}
+
+/* Base styles */
+body {
+  background-color: var(--m-bg);
+  color: var(--m-text);
+  font-family: var(--m-font-main);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--m-text-bright);
+  font-family: var(--m-font-hacker);
+  font-weight: normal;
+}
+
+/* Custom matrix component classes */
+@layer components {
+  .matrix-button {
+    @apply px-4 py-2 bg-matrix-secondary border border-matrix-primary text-matrix-text rounded hover:bg-matrix-primary hover:bg-opacity-20 transition-colors duration-300;
+  }
+  
+  .matrix-panel {
+    @apply bg-matrix-panel border border-matrix-border p-4 rounded;
+  }
+  
+  .matrix-input {
+    @apply bg-matrix-dark border border-matrix-border text-matrix-text p-2 rounded focus:border-matrix-primary focus:outline-none;
+  }
+}

@@ -1,0 +1,30 @@
+import TailwindTest from "./TailwindTest";
+import logo from './logo.svg';
+import './App.css';
+
+function App() {
+  return (
+      <div className="mb-8 p-4 border border-matrix-border rounded">
+        <h2 className="text-xl mb-4">Tailwind Test Component</h2>
+        <TailwindTest />
+      </div>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+
+export default App;
