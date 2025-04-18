@@ -1,29 +1,30 @@
-/* Matrix Sidebar Styles */
+/* Matrix Sidebar Styles - Enhanced Cyberpunk Version with Improved Readability */
 .matrix-sidebar {
   position: fixed;
   left: 0;
   top: 0;
   height: 100vh;
-  background-color: var(--matrix-bg);
-  border-right: 1px solid var(--matrix-border);
-  color: var(--matrix-text);
-  font-family: 'Courier New', monospace;
+  background-color: var(--m-bg, #0c0c0c);
+  border-right: 1px solid var(--m-border, #143214);
+  color: var(--m-text, #00ff41);
+  font-family: var(--m-font-main, 'Courier New', monospace);
   display: flex;
   flex-direction: column;
-  transition: width var(--matrix-time-med) ease-in-out;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   z-index: 100;
+  box-shadow: 0 0 20px rgba(0, 10, 0, 0.5);
 }
 
 .matrix-sidebar.expanded {
-  width: 220px;
+  width: 250px;
 }
 
 .matrix-sidebar.collapsed {
-  width: 60px;
+  width: 70px;
 }
 
-/* Matrix code background effect */
+/* Digital Rain Effect */
 .matrix-code-background {
   position: absolute;
   top: 0;
@@ -37,102 +38,218 @@
 
 .matrix-code-char {
   position: absolute;
-  color: var(--matrix-text);
-  font-size: 12px;
+  color: var(--m-text, #00ff41);
+  font-family: var(--m-font-alt, 'Share Tech Mono', monospace);
+  opacity: 0.05; /* Reduced opacity for better content readability */
+  text-shadow: 0 0 8px var(--m-glow, rgba(0, 255, 65, 0.6));
   animation: fallDown linear infinite;
 }
 
 @keyframes fallDown {
   0% {
     transform: translateY(-100px);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.1;
+  }
+  90% {
+    opacity: 0.1;
   }
   100% {
     transform: translateY(2000px);
+    opacity: 0;
   }
+}
+
+/* Flicker animation */
+@keyframes flicker {
+  0% { opacity: 1; }
+  3% { opacity: 0.8; }
+  6% { opacity: 1; }
+  7% { opacity: 0.3; }
+  8% { opacity: 1; }
+  9% { opacity: 0.8; }
+  10% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* Scan text effect */
+@keyframes scan {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Hack pulse animation */
+@keyframes hackPulse {
+  0% { box-shadow: 0 0 5px 0 rgba(0, 255, 65, 0.3); }
+  50% { box-shadow: 0 0 15px 2px rgba(0, 255, 65, 0.8); }
+  100% { box-shadow: 0 0 5px 0 rgba(0, 255, 65, 0.3); }
+}
+
+/* Scanline effect */
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+/* Terminal blink */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 /* Sidebar header */
 .sidebar-header {
-  padding: 1.5rem 1rem;
+  padding: 1.25rem 1rem;
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-bottom: 1px solid var(--m-border, #143214);
+  background-color: rgba(0, 0, 0, 0.3); /* Slightly darker background for better contrast */
 }
 
 .matrix-logo {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
 .logo-text {
   font-size: 1.5rem;
   font-weight: bold;
-  color: var(--matrix-text-bright);
-  text-shadow: 0 0 10px var(--matrix-glow);
+  font-family: var(--m-font-hacker, 'VT323', monospace);
+  color: var(--m-text-bright, #00ff97);
+  text-shadow: 0 0 10px var(--m-glow, rgba(0, 255, 65, 0.6));
   letter-spacing: 0.2em;
+}
+
+.logo-text-scan {
+  background: linear-gradient(90deg, transparent, var(--m-text-bright, #00ff97), transparent);
+  background-size: 200% 100%;
+  animation: scan 2s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: var(--m-text-bright, #00ff97); /* Fallback for browsers that don't support background-clip */
 }
 
 .version-text {
   font-size: 0.7rem;
-  color: var(--matrix-text-dim);
+  color: var(--m-text, #00ff41); /* Brighter color for better readability */
   margin-top: 0.25rem;
+  letter-spacing: 0.1em;
+}
+
+.sidebar-sub-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  margin-top: 0.5rem;
+  padding: 0 0.25rem;
+}
+
+.sidebar-sub-header .access-level {
+  color: var(--m-warning, #ffe100);
+  font-weight: bold; /* Added for better visibility */
 }
 
 .toggle-button {
   background: transparent;
   border: none;
-  color: var(--matrix-text);
+  color: var(--m-text, #00ff41); /* Brighter color for better readability */
   cursor: pointer;
   font-size: 1rem;
-  padding: 0.25rem;
+  padding: 0.4rem;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  transition: all var(--matrix-time-fast);
+  transition: all 0.2s;
+  font-family: var(--m-font-main, 'Courier New', monospace);
 }
 
 .toggle-button:hover {
-  color: var(--matrix-text-bright);
-  background-color: rgba(0, 255, 65, 0.1);
+  color: var(--m-text-bright, #00ff97);
+  background-color: rgba(0, 255, 65, 0.2); /* Increased opacity for better visibility */
+}
+
+/* Navigation section label */
+.nav-section-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: #ffffff; /* White for maximum contrast */
+  margin: 1rem 0.75rem 0.75rem;
+  letter-spacing: 0.15em;
+  font-family: var(--m-font-alt, 'Share Tech Mono', monospace);
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(0, 255, 65, 0.8); /* Strong glow effect */
+  position: relative;
+  padding-left: 0.5rem;
+  border-radius: 3px;
+  background: linear-gradient(90deg, 
+    rgba(0, 60, 20, 0.6) 0%, 
+    rgba(0, 20, 0, 0.2) 50%, 
+    transparent 100%);
+  padding: 0.25rem 0.5rem;
+}
+
+/* Section label decorative elements */
+.nav-section-label::before {
+  content: '[';
+  margin-right: 0.5rem;
+  color: var(--m-primary, #00ff41);
+}
+
+.nav-section-label::after {
+  content: ']';
+  margin-left: 0.5rem;
+  color: var(--m-primary, #00ff41);
 }
 
 /* Sidebar separator */
 .sidebar-separator {
   position: relative;
   height: 1px;
-  background-color: var(--matrix-border);
+  background-color: var(--m-border, #143214);
   margin: 0;
 }
 
 .scanner-line {
   position: absolute;
-  top: 0;
+  top: -1px;
   left: 0;
   right: 0;
   height: 2px;
-  background-color: var(--matrix-primary);
+  background-color: var(--m-primary, #00ff41);
   opacity: 0.6;
   animation: scanner 2s linear infinite;
+  box-shadow: 0 0 8px var(--m-glow, rgba(0, 255, 65, 0.6));
 }
 
 @keyframes scanner {
-  0% { 
-    transform: translateX(-100%); 
-  }
-  100% { 
-    transform: translateX(100%); 
-  }
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 /* Sidebar navigation */
+/* Hide all scrollbars while maintaining scroll functionality */
 .sidebar-nav {
   flex: 1;
   overflow-y: auto;
-  padding: 1rem 0.5rem;
+  overflow-x: hidden;
+  padding: 0.5rem;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.sidebar-nav::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
 }
 
 .sidebar-nav ul {
@@ -142,106 +259,450 @@
 }
 
 .sidebar-item {
-  margin: 0.25rem 0;
-  transition: background-color var(--matrix-time-fast);
-}
-
-.sidebar-item button {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  padding: 0.75rem;
-  border: none;
-  background: transparent;
-  color: var(--matrix-text);
-  text-align: left;
-  cursor: pointer;
-  transition: all var(--matrix-time-fast);
-  border-radius: 4px;
-  font-family: inherit;
-}
-
-.sidebar-item button:hover {
-  background-color: rgba(0, 255, 65, 0.1);
-  color: var(--matrix-text-bright);
-}
-
-.sidebar-item.active button {
-  background-color: rgba(0, 255, 65, 0.2);
-  color: var(--matrix-text-bright);
-  border-left: 2px solid var(--matrix-primary);
-}
-
-.item-icon {
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 0.75rem;
-}
-
-.item-text {
-  font-size: 0.9rem;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-}
-
-/* Glowing effect for random items */
-.sidebar-item.glow-effect button {
-  box-shadow: 0 0 10px var(--matrix-glow);
-  text-shadow: 0 0 5px var(--matrix-glow);
-  animation: pulse 1s ease-in-out;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-/* Sidebar footer */
-.sidebar-footer {
-  padding: 1rem;
-  border-top: 1px solid var(--matrix-border);
-}
-
-.status-indicator {
-  display: flex;
-  align-items: center;
-  font-size: 0.8rem;
-  color: var(--matrix-text-dim);
-}
-
-.pulse-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--matrix-primary);
-  margin-right: 0.5rem;
   position: relative;
+  margin: 0.25rem 0;
+  transition: all 0.3s;
+  border-radius: 3px;
+  overflow: hidden; /* Contains the effects */
 }
 
-.pulse-dot::after {
+.sidebar-item::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
-  background-color: var(--matrix-primary);
-  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+  background: linear-gradient(90deg, 
+    rgba(0, 255, 65, 0) 0%, 
+    rgba(0, 255, 65, 0.05) 50%, 
+    rgba(0, 255, 65, 0) 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
 }
 
-@keyframes ping {
-  0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
+.sidebar-item:hover::after {
+  opacity: 1;
+  animation: pulse-highlight 2s infinite;
+}
+
+@keyframes pulse-highlight {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+.sidebar-item button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background: rgba(0, 20, 0, 0.4); /* Darker background for better contrast */
+  color: var(--m-text, #00ff41);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.3s;
+  border-radius: 2px;
+  font-family: var(--m-font-alt, 'Share Tech Mono', monospace);
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.05em;
+  font-size: 0.95rem;
+  border: 1px solid transparent; /* Prepare for hover effect */
+  text-shadow: 0 0 2px rgba(0, 255, 65, 0.5); /* Subtle text glow */
+}
+
+/* Make sure text is always visible, even in collapsed mode */
+.matrix-sidebar.collapsed .item-text {
+  display: inline-block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  position: absolute;
+  left: 60px; /* Position text to the right of the icon */
+  background: rgba(0, 20, 0, 0.9);
+  padding: 0.4rem 0.8rem;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 255, 65, 0.3);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  min-width: 120px;
+  pointer-events: none; /* Prevents interference with clicking */
+  transition: opacity 0.3s, transform 0.3s;
+  transform: translateX(10px);
+}
+
+/* Show text by default in expanded mode */
+.matrix-sidebar.expanded .item-text {
+  display: inline-block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Enhance hover effect for collapsed mode */
+.matrix-sidebar.collapsed .sidebar-item:hover .item-text {
+  opacity: 1 !important;
+  transform: translateX(0);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.9), 0 0 5px rgba(0, 255, 65, 0.5);
+}
+
+.sidebar-item button:hover {
+  background-color: rgba(0, 30, 0, 0.7);
+  color: var(--m-text-bright, #00ff97);
+  text-shadow: 0 0 5px rgba(0, 255, 150, 0.7);
+  border-color: rgba(0, 255, 65, 0.5);
+  box-shadow: 
+    inset 0 0 10px rgba(0, 255, 65, 0.2),
+    0 0 5px rgba(0, 255, 65, 0.3);
+  transform: translateY(-1px);
+}
+
+.sidebar-item.active button {
+  background: linear-gradient(90deg, 
+    rgba(0, 60, 0, 0.8) 0%, 
+    rgba(0, 30, 0, 0.6) 100%);
+  color: #fff; /* White text for maximum contrast */
+  border-left: 2px solid var(--m-text-bright, #00ff97);
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  box-shadow: 
+    inset 0 0 15px rgba(0, 255, 65, 0.3),
+    0 0 5px rgba(0, 255, 65, 0.5);
+}
+
+/* Active item indicator */
+.sidebar-item.active button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    linear-gradient(90deg, 
+      rgba(0, 255, 65, 0.2) 0%, 
+      transparent 20%);
+  pointer-events: none;
+}
+
+/* Active hover state */
+.sidebar-item.active button:hover {
+  background: linear-gradient(90deg, 
+    rgba(0, 80, 0, 0.9) 0%, 
+    rgba(0, 40, 0, 0.7) 100%);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+}
+
+.item-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  font-family: var(--m-font-hacker, 'VT323', monospace);
+  font-size: 1.3rem;
+  background: rgba(0, 255, 65, 0.1);
+  border-radius: 2px;
+  color: var(--m-text-bright, #00ff97);
+  text-shadow: 0 0 5px rgba(0, 255, 65, 0.8);
+  position: relative;
+  transition: all 0.3s;
+}
+
+/* Pulsing outline for the icon */
+.sidebar-item:hover .item-icon {
+  transform: scale(1.1);
+  background: rgba(0, 255, 65, 0.2);
+  box-shadow: 0 0 8px rgba(0, 255, 65, 0.5);
+}
+
+.sidebar-item.active .item-icon {
+  background: rgba(0, 255, 65, 0.25);
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 255, 65, 0.6);
+}
+
+.item-text {
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  position: relative;
+  font-family: var(--m-font-alt, 'Share Tech Mono', monospace);
+  font-weight: 500;
+  transition: all 0.2s;
+  text-transform: uppercase; /* More futuristic/tech look */
+  display: inline-block;
+}
+
+/* Scan effect for text */
+.sidebar-item:hover .item-text::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 8px;
+  background: rgba(0, 255, 65, 0.4);
+  filter: blur(4px);
+  animation: text-scan 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes text-scan {
+  from { left: 0; }
+  to { left: 100%; }
+}
+
+.item-badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background-color: rgba(0, 255, 65, 0.3); /* Increased opacity for visibility */
+  border: 1px solid var(--m-primary, #00ff41);
+  color: var(--m-text-bright, #00ff97);
+  font-size: 0.65rem;
+  line-height: 1;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.25rem;
+  font-family: var(--m-font-alt, 'Share Tech Mono', monospace);
+  font-weight: bold; /* Added for emphasis */
+}
+
+/* Scanline effect for active items */
+.scanline-effect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: rgba(0, 255, 65, 0.15); /* Increased for visibility */
+  animation: scanline 1s linear infinite;
+  pointer-events: none;
+  opacity: 0.5;
+  z-index: 1;
+}
+
+/* Quick access section */
+.quick-access {
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.quick-access-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.quick-access-button {
+  padding: 0.5rem 0.25rem;
+  background-color: rgba(0, 255, 65, 0.15); /* Increased contrast */
+  border: 1px solid var(--m-primary, #00ff41);
+  color: var(--m-text-bright, #00ff97); /* Brighter color for readability */
+  font-size: 0.7rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--m-font-alt, 'Share Tech Mono', monospace);
+  font-weight: bold; /* Added for emphasis */
+}
+
+.quick-access-button:hover {
+  background-color: rgba(0, 255, 65, 0.3); /* Increased for visibility */
+  color: var(--m-text-bright, #00ff97);
+  box-shadow: 0 0 8px var(--m-glow, rgba(0, 255, 65, 0.6));
+}
+
+/* Tooltip for collapsed mode */
+.sidebar-tooltip {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 0;
+  width: 180px;
+  background-color: var(--m-bg, #0c0c0c);
+  border: 1px solid var(--m-primary, #00ff41); /* Changed to primary color for visibility */
+  color: var(--m-text, #00ff41);
+  padding: 0;
+  border-radius: 3px;
+  z-index: 10;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  pointer-events: none;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 255, 65, 0.2); /* Added green glow */
+}
+
+.sidebar-tooltip-header {
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--m-border, #143214);
+  font-size: 0.8rem;
+  color: var(--m-text-bright, #00ff97);
+  font-family: var(--m-font-alt, 'Share Tech Mono', monospace);
+  background: rgba(0, 255, 65, 0.1); /* Increased for visibility */
+  font-weight: bold; /* Added for emphasis */
+}
+
+.sidebar-tooltip-body {
+  padding: 0.5rem;
+  font-size: 0.7rem;
+  color: var(--m-text, #00ff41); /* Brightened from dim */
+  background-color: rgba(0, 0, 0, 0.5); /* Added for contrast */
+}
+
+.sidebar-item:hover .sidebar-tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Submenu styles */
+.sidebar-submenu {
+  padding-left: 2rem;
+  margin-top: 0.25rem;
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.2s ease-out;
+}
+
+.sidebar-item.expanded .sidebar-submenu {
+  max-height: 500px; /* Arbitrary large value */
+}
+
+.submenu-item {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--m-text, #00ff41); /* Brightened from dim */
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.submenu-item:hover {
+  color: var(--m-text-bright, #00ff97);
+  background-color: rgba(0, 255, 65, 0.1); /* Added background on hover */
+}
+
+.submenu-icon {
+  margin-right: 0.5rem;
+  font-size: 0.7rem;
+}
+
+/* Glowing effect for items */
+.sidebar-item.glow-effect button {
+  animation: hackPulse 1s ease-in-out;
+}
+
+.glow-text {
+  text-shadow: 0 0 8px var(--m-glow, rgba(0, 255, 65, 0.6));
+}
+
+/* Sidebar footer */
+.sidebar-footer {
+  padding: 0.75rem;
+  border-top: 1px solid var(--m-border, #143214);
+  background-color: rgba(0, 0, 0, 0.3); /* Slightly darker background for better contrast */
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--m-text, #00ff41); /* Brightened from dim */
+  font-family: var(--m-font-alt, 'Share Tech Mono', monospace);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--m-success, #00ff41);
+  margin-right: 0.5rem;
+  position: relative;
+  animation: blink 1.5s infinite;
+}
+
+.pulse-dot.offline {
+  background-color: var(--m-danger, #ff2222);
+}
+
+/* System metrics in footer */
+.system-metrics {
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+}
+
+.metric-row {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.metric-label {
+  color: var(--m-text, #00ff41); /* Brightened from dim */
+  font-weight: bold; /* Added for emphasis */
+}
+
+.metric-value {
+  text-align: right;
+  color: var(--m-text-bright, #00ff97); /* Brightened for readability */
+}
+
+.metric-bar {
+  height: 4px;
+  background-color: rgba(7, 39, 7, 0.6); /* Increased contrast from background */
+  border-radius: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 65, 0.2); /* Added border for visibility */
+}
+
+.metric-bar-fill {
+  height: 100%;
+  animation: flicker 6s infinite;
+}
+
+.metric-bar-fill.cpu {
+  background-color: var(--m-primary, #00ff41);
+  width: 42%;
+}
+
+.metric-bar-fill.mem {
+  background-color: var(--m-info, #39a0ed);
+  width: 78%;
+}
+
+.metric-bar-fill.sec {
+  background-color: var(--m-warning, #ffe100);
+  width: 91%;
+}
+
+.trace-countdown {
+  color: var(--m-warning, #ffe100);
+  font-size: 0.7rem;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold; /* Added for emphasis */
+  text-shadow: 0 0 5px rgba(255, 225, 0, 0.3); /* Added subtle glow */
+}
+
+.encrypt-status {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Terminal status */
+.terminal-status {
+  font-family: var(--m-font-alt, 'Share Tech Mono', monospace);
+  color: var(--m-text, #00ff41);
 }
 
 /* Hide scrollbar */
@@ -254,6 +715,59 @@
 }
 
 .sidebar-nav::-webkit-scrollbar-thumb {
-  background-color: var(--matrix-border);
-  border-radius: 4px;
+  background-color: var(--m-primary, #00ff41);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb:hover {
+  background-color: var(--m-text-bright, #00ff97);
+}
+
+/* Connection status */
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  color: var(--m-text, #00ff41);
+}
+
+/* Access level wrapper */
+.access-level-wrapper {
+  display: flex;
+  gap: 0.25rem;
+  cursor: pointer;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .matrix-sidebar.expanded {
+    width: 230px;
+  }
+  
+  .matrix-sidebar.collapsed {
+    width: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .matrix-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100%;
+    z-index: 1000;
+    transform: translateX(-100%);
+  }
+  
+  .matrix-sidebar.expanded {
+    transform: translateX(0);
+    width: 85%;
+    max-width: 300px;
+  }
+  
+  .matrix-sidebar.collapsed {
+    transform: translateX(-100%);
+  }
 }

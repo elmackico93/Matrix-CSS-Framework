@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ComponentTestPage.css';
 import { Sidebar } from './components/core/Sidebar';
-// import { MatrixCode } from './components/core/Tooltip';
+// import { MatrixCode } from './components/core/MatrixCode';
 
 // Import components
 // Uncomment as you implement them

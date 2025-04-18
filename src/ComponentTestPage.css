@@ -1875,3 +1875,254 @@
     0 0 20px var(--matrix-glow),
     inset 0 0 5px var(--matrix-glow);
 }
+
+/* Advanced Matrix animation and cyberpunk styling */
+
+/* Digital rain animation */
+@keyframes matrix-fall {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.8;
+  }
+  90% {
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(1000%);
+    opacity: 0;
+  }
+}
+
+/* Terminal scanning text effect */
+@keyframes terminal-scan {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Text flickering effect */
+@keyframes text-flicker {
+  0% { opacity: 1; }
+  3% { opacity: 0.8; }
+  6% { opacity: 1; }
+  7% { opacity: 0.3; }
+  8% { opacity: 1; }
+  9% { opacity: 0.8; }
+  20% { opacity: 1; }
+  50% { opacity: 0.8; }
+  70% { opacity: 1; }
+  73% { opacity: 0.8; }
+  80% { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* Faster text flickering */
+@keyframes text-flicker-fast {
+  0% { opacity: 1; }
+  2% { opacity: 0.6; }
+  4% { opacity: 1; }
+  8% { opacity: 0.2; }
+  9% { opacity: 1; }
+  18% { opacity: 0.6; }
+  20% { opacity: 1; }
+  25% { opacity: 0.8; }
+  60% { opacity: 1; }
+  65% { opacity: 0.3; }
+  90% { opacity: 1; }
+}
+
+/* Terminal typing effect */
+@keyframes terminal-typing {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+/* Terminal blinking cursor */
+@keyframes terminal-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Scanline effect */
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glitch animation */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
+}
+
+/* Hack mode animation */
+@keyframes hack-pulse {
+  0% {
+    box-shadow: 0 0 5px 0 rgba(0, 255, 65, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 15px 2px rgba(0, 255, 65, 0.6);
+  }
+  100% {
+    box-shadow: 0 0 5px 0 rgba(0, 255, 65, 0.2);
+  }
+}
+
+/* Utility classes for animations */
+
+.glitch-text {
+  animation: glitch 0.2s linear infinite;
+  text-shadow: 
+    2px 0 #0f0, 
+    -2px 0 #00f,
+    0 0 20px rgba(0, 255, 65, 0.8);
+}
+
+.terminal-scan {
+  background: linear-gradient(90deg, transparent, var(--m-text-dim), transparent);
+  background-size: 200% 100%;
+  animation: terminal-scan 2s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.terminal-scan-green {
+  background: linear-gradient(90deg, transparent, var(--m-text-bright), transparent);
+  background-size: 200% 100%;
+  animation: terminal-scan 2s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.terminal-scan-slow {
+  background: linear-gradient(90deg, transparent, var(--m-text-dim), transparent);
+  background-size: 200% 100%;
+  animation: terminal-scan 4s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.terminal-scan-fast {
+  background: linear-gradient(90deg, transparent, var(--m-text-bright), transparent);
+  background-size: 200% 100%;
+  animation: terminal-scan 1s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.terminal-glow {
+  text-shadow: 0 0 8px var(--m-glow);
+}
+
+.terminal-flicker {
+  animation: text-flicker 6s infinite;
+}
+
+.terminal-flicker-fast {
+  animation: text-flicker-fast 3s infinite;
+}
+
+.terminal-type {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 0.15em solid var(--m-text);
+  letter-spacing: 0.15em;
+  animation: terminal-typing 3.5s steps(40, end) infinite;
+}
+
+.terminal-blink {
+  animation: terminal-blink 1s step-end infinite;
+}
+
+.terminal-scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: rgba(0, 255, 65, 0.1);
+  animation: scanline 1s linear infinite;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.hack-animation {
+  animation: hack-pulse 1.5s ease-in-out;
+}
+
+.shadow-glow {
+  box-shadow: 0 0 10px var(--m-glow);
+}
+
+/* Matrix scrollbar styling */
+.scrollbar-matrix::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-matrix::-webkit-scrollbar-track {
+  background: var(--m-dark);
+}
+
+.scrollbar-matrix::-webkit-scrollbar-thumb {
+  background: var(--m-border);
+  border-radius: 3px;
+}
+
+.scrollbar-matrix::-webkit-scrollbar-thumb:hover {
+  background: var(--m-primary);
+}
