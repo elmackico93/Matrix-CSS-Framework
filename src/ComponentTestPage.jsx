@@ -2465,7 +2465,7 @@ function MyComponent() {
           <p className="header-description">Comprehensive test page for all Matrix-themed components</p>
         </header>
 
-        <div className="test-page-navigation">
+        {/* <div className="test-page-navigation">
           {sidebarTabs.map(tab => (
             <button 
               key={tab.id}
@@ -2475,7 +2475,7 @@ function MyComponent() {
               {tab.label}
             </button>
           ))}
-        </div>
+        </div> */}
 
         <main className="test-page-content">
           {renderTabContent()}
