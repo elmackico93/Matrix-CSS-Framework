@@ -1,1 +1,2 @@
-export { default as Header } from '.';
+// Fix circular reference
+export { default } from './Header';

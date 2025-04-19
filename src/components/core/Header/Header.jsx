@@ -6,7 +6,7 @@ import './Header.css';
  * and cyberpunk-style navigation
  * 
  * @param {Object} props - Component props
- * @param {Array} props.navLinks - Array of navigation link objects with id, label
+ * @param {Array} props.navLinks - Array of navigation link objects with id, label (for component tabs)
  * @param {string} props.activeTab - ID of the currently active tab
  * @param {Function} props.onTabChange - Callback function when tab is changed
  * @param {string} props.className - Additional CSS class names
@@ -23,11 +23,29 @@ const Header = ({
   const [scrolled, setScrolled] = useState(false);
   const [searchStatus, setSearchStatus] = useState('IDLE');
   const [searchInput, setSearchInput] = useState('');
+  const [showComponentsDropdown, setShowComponentsDropdown] = useState(false);
   
   // Refs
   const canvasRef = useRef(null);
   const navRef = useRef(null);
   const logoTextRef = useRef(null);
+  const componentsDropdownRef = useRef(null);
+  
+  // SEO-optimized main navigation items
+  const mainNavLinks = [
+    { id: 'get-started', label: 'GET STARTED', url: '#get-started' },
+    { id: 'documentation', label: 'DOCUMENTATION', url: '#documentation' },
+    { id: 'components', label: 'COMPONENTS', url: '#components', hasDropdown: true },
+    { id: 'themes', label: 'THEMES', url: '#themes' },
+    { id: 'github', label: 'GITHUB', url: 'https://github.com/your-repo/matrix-css', 
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+        </svg>
+      ),
+      isExternal: true
+    }
+  ];
   
   // Toggle mobile menu
   const toggleMobileMenu = () => {
@@ -35,6 +53,27 @@ const Header = ({
     // Prevent body scrolling when menu is open
     document.body.style.overflow = !mobileMenuOpen ? 'hidden' : '';
   };
+  
+  // Toggle components dropdown
+  const toggleComponentsDropdown = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowComponentsDropdown(!showComponentsDropdown);
+  };
+  
+  // Handle click outside to close dropdown
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (componentsDropdownRef.current && !componentsDropdownRef.current.contains(event.target)) {
+        setShowComponentsDropdown(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
   
   // Handle scroll effects
   useEffect(() => {
@@ -171,6 +210,13 @@ const Header = ({
     }
   };
   
+  // Handle component navigation
+  const handleComponentNav = (id) => {
+    onTabChange(id);
+    setShowComponentsDropdown(false);
+    setMobileMenuOpen(false);
+  };
+  
   return (
     <>
       {/* Mobile sidebar backdrop */}
@@ -216,25 +262,69 @@ const Header = ({
               <span className="decoration-line"></span>
             </div>
             <div className="nav-links">
-              {navLinks.map((link, index) => (
-                <a 
-                  key={link.id} 
-                  href={`#${link.id}`}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    onTabChange(link.id);
-                    setMobileMenuOpen(false);
-                  }}
-                  className={`nav-link ${activeTab === link.id ? 'active' : ''}`}
-                  data-text={link.label}
+              {mainNavLinks.map((link, index) => (
+                <div 
+                  key={link.id}
+                  className={`nav-link-wrapper ${link.hasDropdown ? 'has-dropdown' : ''}`}
+                  ref={link.id === 'components' ? componentsDropdownRef : null}
                 >
-                  <span className="link-number">{String(index + 1).padStart(2, '0')}</span>
-                  <span className="link-text">{link.label}</span>
-                  <span className="link-highlight"></span>
-                  {link.icon && (
-                    <span className="link-icon">{link.icon}</span>
+                  <a 
+                    href={link.url}
+                    onClick={(e) => {
+                      if (link.isExternal) {
+                        // Let external links navigate normally
+                      } else if (link.hasDropdown) {
+                        toggleComponentsDropdown(e);
+                      } else {
+                        e.preventDefault();
+                        // Handle normal navigation or tab switching
+                        if (link.id === 'components') {
+                          onTabChange('buttons'); // Default to buttons tab
+                        }
+                        setMobileMenuOpen(false);
+                      }
+                    }}
+                    className={`nav-link ${activeTab === link.id ? 'active' : ''}`}
+                    target={link.isExternal ? "_blank" : ""}
+                    rel={link.isExternal ? "noopener noreferrer" : ""}
+                    data-text={link.label}
+                  >
+                    <span className="link-number">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="link-text">{link.label}</span>
+                    <span className="link-highlight"></span>
+                    {link.icon && (
+                      <span className="link-icon">{link.icon}</span>
+                    )}
+                    {link.hasDropdown && (
+                      <span className="dropdown-arrow">▼</span>
+                    )}
+                  </a>
+                  
+                  {/* Components Dropdown */}
+                  {link.hasDropdown && showComponentsDropdown && (
+                    <div className="components-dropdown">
+                      <div className="dropdown-header">
+                        <span className="dropdown-title">COMPONENT LIBRARY</span>
+                      </div>
+                      <div className="dropdown-content">
+                        {navLinks.map((component) => (
+                          <a 
+                            key={component.id}
+                            href={`#${component.id}`}
+                            className={`dropdown-item ${activeTab === component.id ? 'active' : ''}`}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleComponentNav(component.id);
+                            }}
+                          >
+                            {component.icon && <span className="dropdown-item-icon">{component.icon}</span>}
+                            <span className="dropdown-item-text">{component.label}</span>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
                   )}
-                </a>
+                </div>
               ))}
             </div>
             

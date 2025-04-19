@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import './ComponentTestPage.css';
 import { Sidebar } from './components/core/Sidebar';
 // import { MatrixCode } from './components/core/MatrixCode';
+import Header from './components/core/Header';
 
 // Import components
 // Uncomment as you implement them
 // import { Button } from './components/core/Button';
 // import { Card } from './components/core/Card';
+// import { Hero } from './components/core/Hero';
 // import { Input } from './components/core/Input';
 //import { Checkbox } from './components/core/Checkbox';
 // import { Radio } from './components/core/Radio';
@@ -2455,28 +2457,17 @@ function MyComponent() {
       />
       
       <div className={`matrix-content-wrapper ${sidebarExpanded ? 'sidebar-expanded' : 'sidebar-collapsed'}`} 
-           style={{ 
-             marginLeft: sidebarExpanded ? '220px' : '60px',
-             transition: 'margin-left var(--matrix-time-med) ease-in-out'
-           }}>
-        <header className="test-page-header">
-          <div className="scanner-line"></div>
-          <h1>Matrix CSS Components</h1>
-          <p className="header-description">Comprehensive test page for all Matrix-themed components</p>
-        </header>
-
-        {/* <div className="test-page-navigation">
-          {sidebarTabs.map(tab => (
-            <button 
-              key={tab.id}
-              className={`nav-item ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div> */}
-
+      style={{ 
+        marginLeft: sidebarExpanded ? '220px' : '60px',
+        marginTop: '70px', // Add this line
+        transition: 'margin-left var(--matrix-time-med) ease-in-out'
+      }}>
+            <Header
+              navLinks={sidebarTabs}
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+              className="matrix-header"
+            />
         <main className="test-page-content">
           {renderTabContent()}
         </main>
