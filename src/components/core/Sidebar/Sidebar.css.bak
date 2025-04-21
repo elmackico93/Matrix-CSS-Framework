@@ -27,7 +27,7 @@
   position: fixed;
   left: 0;
   top: var(--m-header-height);
-  height: calc(100vh - var(--m-header-height));
+  height: 100vh;
   background-color: var(--m-bg);
   border-right: 1px solid var(--m-border);
   color: var(--m-text);

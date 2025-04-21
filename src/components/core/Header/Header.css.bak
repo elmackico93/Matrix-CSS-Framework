@@ -25,7 +25,6 @@
   
   /* Mobile sidebar backdrop overlay */
   .sidebar-backdrop {
-  top: var(--m-header-height);
     position: fixed;
     inset: 0;
     background-color: rgba(0, 0, 0, 0.5);
@@ -34,7 +33,6 @@
   }
   
   .sidebar-backdrop.active {
-  top: var(--m-header-height);
     display: block;
   }
   

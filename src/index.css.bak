@@ -8,7 +8,6 @@
 
 /* Matrix CSS variables */
 :root {
-  --m-header-height: 70px;
   /* Core colors */
   --m-black: #000000;
   --m-bg: #0c0c0c;
