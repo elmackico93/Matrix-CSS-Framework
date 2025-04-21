@@ -10,13 +10,17 @@ import './Header.css';
  * @param {string} props.activeTab - ID of the currently active tab
  * @param {Function} props.onTabChange - Callback function when tab is changed
  * @param {string} props.className - Additional CSS class names
+ * @param {boolean} props.sidebarVisible - Whether the sidebar is visible (mobile only)
+ * @param {Function} props.onToggleSidebar - Callback function to toggle sidebar visibility
  * @returns {React.ReactElement} Rendered header component
  */
 const Header = ({ 
   navLinks = [], 
   activeTab, 
   onTabChange,
-  className = "" 
+  className = "",
+  sidebarVisible = false,
+  onToggleSidebar
 }) => {
   // State management
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -47,11 +51,23 @@ const Header = ({
     }
   ];
   
-  // Toggle mobile menu
+  // Check if we're on mobile
+  const isMobile = () => {
+    return window.innerWidth <= 768;
+  };
+  
+  // Toggle mobile menu (for header nav)
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
     // Prevent body scrolling when menu is open
     document.body.style.overflow = !mobileMenuOpen ? 'hidden' : '';
+  };
+  
+  // Toggle sidebar visibility (mobile only)
+  const handleToggleSidebar = () => {
+    if (onToggleSidebar && isMobile()) {
+      onToggleSidebar(!sidebarVisible);
+    }
   };
   
   // Toggle components dropdown
@@ -215,6 +231,11 @@ const Header = ({
     onTabChange(id);
     setShowComponentsDropdown(false);
     setMobileMenuOpen(false);
+    
+    // Close sidebar on mobile if open
+    if (isMobile() && sidebarVisible) {
+      onToggleSidebar(false);
+    }
   };
   
   return (
@@ -230,6 +251,22 @@ const Header = ({
         <div className="nav-container">
           {/* Logo Section with Digital Animation */}
           <div className="nav-logo-container">
+            {/* Mobile hamburger button that controls the sidebar */}
+            {isMobile() && (
+              <button 
+                className={`sidebar-toggle-button ${sidebarVisible ? 'active' : ''}`}
+                onClick={handleToggleSidebar}
+                aria-label={sidebarVisible ? "Close sidebar" : "Open sidebar"}
+                aria-expanded={sidebarVisible}
+              >
+                <div className="toggle-icon">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </button>
+            )}
+            
             <a href="#" className="nav-logo">
               <span className="logo-bracket">[</span>
               <span className="logo-text" ref={logoTextRef} data-text="MATRIX.CSS">MATRIX.CSS</span>
@@ -242,7 +279,7 @@ const Header = ({
             </div>
           </div>
           
-          {/* Mobile Menu Toggle */}
+          {/* Mobile Menu Toggle (for header nav menu) */}
           <div 
             className={`nav-menu-toggle ${mobileMenuOpen ? 'active' : ''}`} 
             onClick={toggleMobileMenu}

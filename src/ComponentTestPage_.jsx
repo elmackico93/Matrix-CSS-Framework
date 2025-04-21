@@ -26,11 +26,6 @@ import Header from './components/core/Header';
  * Comprehensive test page for Matrix CSS components
  * This page displays all components with different configurations
  */
-// Helper function to check if viewport is mobile size
-function isMobile() {
-
-  return window.innerWidth <= 768;
-}
 function ComponentTestPage() {
   // State for interactive components
   const [activeTab, setActiveTab] = useState('buttons');
@@ -49,12 +44,10 @@ function ComponentTestPage() {
       glitch: false,
       scanline: false,
       codeRain: false
-
   });
   
   // Sidebar state
-  // Sidebar visibility state - starts true for desktop, false for mobile
-  const [sidebarVisible, setSidebarVisible] = useState(!isMobile());
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
   
   // States for modal examples
   const [activeModalType, setActiveModalType] = useState('default');
@@ -92,23 +85,11 @@ function ComponentTestPage() {
   useEffect(() => {
     if (isModalOpen && activeModalType === 'access') {
       const glitchInterval = setInterval(() => {
-  // Toggle sidebar visibility (mobile only)
-  const toggleSidebar = () => {
-    if (isMobile()) {
-      setSidebarVisible(!sidebarVisible);
-  
-  }
-
-  };
         setGlitching(prev => !prev);
-    
-  }, 300);
+      }, 300);
       
-    
-  return () => clearInterval(glitchInterval);
-  
-  }
-
+      return () => clearInterval(glitchInterval);
+    }
   }, [isModalOpen, activeModalType]);
 
   // Helper function to render a component card
@@ -124,7 +105,6 @@ function ComponentTestPage() {
   // Toggle progress value for demo
   const toggleProgress = () => {
     setProgress(prev => prev >= 90 ? 10 : prev + 20);
-
   };
 
   // Custom Button component if actual component not yet implemented
@@ -152,8 +132,7 @@ function ComponentTestPage() {
         '- scan: Scan for security vulnerabilities',
         '- exit: Close terminal session'
       ];
-  
-  } else if (command === 'status') {
+    } else if (command === 'status') {
       response = [
         'SYSTEM STATUS:',
         '- CPU: 72% OPERATIONAL',
@@ -161,8 +140,7 @@ function ComponentTestPage() {
         '- SECURITY: ACTIVE',
         '- ENCRYPTION: ENABLED'
       ];
-  
-  } else if (command === 'scan') {
+    } else if (command === 'scan') {
       response = [
         'INITIATING SECURITY SCAN...',
         'SCANNING NETWORK PERIMETER...',
@@ -170,15 +148,12 @@ function ComponentTestPage() {
         'SCANNING AUTHENTICATION PROTOCOLS...',
         'SCAN COMPLETE. NO VULNERABILITIES DETECTED.'
       ];
-  
-  } else if (command === 'exit') {
+    } else if (command === 'exit') {
       response = ['TERMINATING SESSION...'];
       setTimeout(() => setIsModalOpen(false), 1000);
-  
-  } else if (command !== '') {
+    } else if (command !== '') {
       response = [`UNKNOWN COMMAND: "${command}". TYPE "help" FOR AVAILABLE COMMANDS.`];
-  
-  }
+    }
     
     setTerminalCommands([...terminalCommands, `> ${command}`, ...response, '']);
     setTerminalInput('');
@@ -188,18 +163,14 @@ function ComponentTestPage() {
       const terminal = document.getElementById('terminal-content');
       if (terminal) {
         terminal.scrollTop = terminal.scrollHeight;
-    
-  }
-  
-  }, 10);
-
+      }
+    }, 10);
   };
   
   // Function to open modal with specific type
   const openModal = (type) => {
     setActiveModalType(type);
     setIsModalOpen(true);
-
   };
   
   // Function to copy code snippet to clipboard
@@ -207,13 +178,10 @@ function ComponentTestPage() {
     navigator.clipboard.writeText(code)
       .then(() => {
         alert('Code copied to clipboard!');
-    
-  })
+      })
       .catch(err => {
         console.error('Failed to copy: ', err);
-    
-  });
-
+      });
   };
 
   // Mock Input component for the test page
@@ -234,7 +202,6 @@ function ComponentTestPage() {
     required,
     className = '',
     ...props 
-
   }) => {
     const [showPassword, setShowPassword] = useState(false);
     const inputId = props.id || Math.random().toString(36).substring(2, 9);
@@ -247,16 +214,14 @@ function ComponentTestPage() {
       outlined: "bg-transparent border-matrix-border border-2",
       ghosted: "bg-transparent border-b border-matrix-border rounded-none",
       terminal: "bg-black font-matrix-hacker border border-matrix-text tracking-wider"
-  
-  };
+    };
     
     // Size classes
     const sizeClasses = {
       sm: "p-1.5 text-xs",
       md: "p-2 text-sm",
       lg: "p-3 text-base"
-  
-  };
+    };
     
     // Status classes
     const statusClasses = {
@@ -265,16 +230,14 @@ function ComponentTestPage() {
       warning: "border-matrix-warning",
       error: "border-matrix-danger",
       info: "border-matrix-info"
-  
-  };
+    };
     
     const iconPadding = [
       prefix ? "pl-9" : "",
       (suffix || type === 'password') ? "pr-9" : ""
     ].join(" ");
     
-  
-  return (
+    return (
       <div className={`mb-4 ${fullWidth ? "w-full" : "w-auto"}`}>
         {label && (
           <label htmlFor={inputId} className="block mb-2 text-sm font-medium text-matrix-text">
@@ -336,7 +299,6 @@ function ComponentTestPage() {
         {helperText && !error && <p className="mt-1 text-xs text-matrix-text-dim">{helperText}</p>}
       </div>
     );
-
   };
 
   
@@ -344,8 +306,7 @@ function ComponentTestPage() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 'buttons':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Standard Button Variants">
               <div className="flex-grid">
@@ -507,8 +468,7 @@ function ComponentTestPage() {
         );
       
         case 'cards':
-        
-  return (
+          return (
             <div className="tab-content">
               <ComponentSection title="Basic Card Variants">
                 <div className="card-grid">
@@ -557,8 +517,7 @@ function ComponentTestPage() {
                     background: 'rgba(15, 15, 15, 0.3)', 
                     backdropFilter: 'blur(2px)',
                     border: '1px solid rgba(0, 255, 65, 0.2)'
-                
-  }}>
+                  }}>
                     <div className="card-header">Glass Card</div>
                     <div className="card-body">
                       <p>Card with translucent glass effect background.</p>
@@ -572,8 +531,7 @@ function ComponentTestPage() {
                   <div className="matrix-card" style={{
                     background: 'var(--m-bg)',
                     boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.5)'
-                
-  }}>
+                  }}>
                     <div className="card-header">Inset Card</div>
                     <div className="card-body">
                       <p>Card with an inset shadow effect for depth.</p>
@@ -582,8 +540,7 @@ function ComponentTestPage() {
         
                   <div className="matrix-card" style={{
                     clipPath: 'polygon(0 10%, 10% 0, 90% 0, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0 90%)'
-                
-  }}>
+                  }}>
                     <div className="card-header">Cyber Card</div>
                     <div className="card-body">
                       <p>Card with angled corners for a cyberpunk aesthetic.</p>
@@ -636,8 +593,7 @@ function ComponentTestPage() {
                   fontFamily: 'var(--m-font-hacker)',
                   textShadow: '0 0 5px var(--m-glow)',
                   position: 'relative'
-              
-  }}>
+                }}>
                   <div className="card-header">
                     <div style={{ 
                       position: 'absolute', 
@@ -645,8 +601,7 @@ function ComponentTestPage() {
                       right: '6px',
                       fontSize: '0.6rem',
                       opacity: '0.6'
-                  
-  }}>DATA_NODE_127</div>
+                    }}>DATA_NODE_127</div>
                     System Status
                   </div>
                   <div className="card-body">
@@ -674,8 +629,7 @@ function ComponentTestPage() {
                       textAlign: 'center', 
                       color: 'var(--m-text-bright)', 
                       animation: 'pulse 3s infinite'
-                  
-  }}>
+                    }}>
                       SYSTEM OPERATIONAL
                     </div>
                   </div>
@@ -699,8 +653,7 @@ function ComponentTestPage() {
           );
           
       case 'inputs':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Input Variants">
               <div className="input-grid">
@@ -874,8 +827,7 @@ function ComponentTestPage() {
                       <circle cx="11" cy="11" r="8"></circle>
                       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                
-  }
+                  }
                 />
                 <MatrixInput 
                   label="With Suffix Icon" 
@@ -885,8 +837,7 @@ function ComponentTestPage() {
                       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                       <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                
-  }
+                  }
                 />
                 <MatrixInput 
                   label="Password with Toggle" 
@@ -993,8 +944,7 @@ function ComponentTestPage() {
                       <circle cx="11" cy="11" r="8"></circle>
                       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                
-  }
+                  }
                   hasGlow
                 />
                 <div className="bg-black p-4 rounded border border-matrix-text col-span-2">
@@ -1030,8 +980,7 @@ function ComponentTestPage() {
                       <circle cx="11" cy="11" r="8"></circle>
                       <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
-                
-  }
+                  }
                   hasGlow
                   size="lg"
                 />
@@ -1044,8 +993,7 @@ function ComponentTestPage() {
                       <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                       <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                     </svg>
-                
-  }
+                  }
                   status="success"
                   helperText="Code verified successfully"
                 />
@@ -1110,8 +1058,7 @@ function ComponentTestPage() {
         );
 
       case 'checkboxes':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Checkbox Variants">
               <div className="control-grid">
@@ -1479,8 +1426,7 @@ function ComponentTestPage() {
         );
         
       case 'radios':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Radio Variants">
               <div className="control-grid">
@@ -1548,8 +1494,7 @@ function ComponentTestPage() {
         );
 
       case 'selects':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Select Variants">
               <div className="control-grid">
@@ -1628,8 +1573,7 @@ function ComponentTestPage() {
         );
 
       case 'switches':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Switch Variants">
               <div className="control-grid">
@@ -1718,8 +1662,7 @@ function ComponentTestPage() {
         );
 
       case 'progress':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Progress Bar Variants">
               <div className="space-y-4">
@@ -1875,8 +1818,7 @@ function ComponentTestPage() {
         );
 
       case 'alerts':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Alert Variants">
               <div className="space-y-4">
@@ -1963,8 +1905,7 @@ function ComponentTestPage() {
         );
 
       case 'modals':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Enhanced Modal System">
               <div className="space-y-4">
@@ -2118,8 +2059,7 @@ function ComponentTestPage() {
                   <div className="absolute inset-0 opacity-10 pointer-events-none">
                     <div className="absolute inset-0 opacity-20" style={{
                       backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300FFFF' fill-opacity='0.15'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-                  
-  }}></div>
+                    }}></div>
                   </div>
                   
                   <div className="border-b border-cyan-500 p-3 flex justify-between items-center bg-black relative">
@@ -2310,7 +2250,6 @@ import {
 function MyComponent() {
   const [isOpen, setIsOpen] = useState(false);
   
-
   return (
     <>
       <Button onClick={() => setIsOpen(true)}>
@@ -2359,8 +2298,7 @@ function MyComponent() {
         );
 
       case 'badges':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Badge Variants">
               <div className="flex flex-wrap gap-2">
@@ -2408,8 +2346,7 @@ function MyComponent() {
         );
 
       case 'tooltips':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Tooltip Positions">
               <div className="tooltip-grid">
@@ -2448,8 +2385,7 @@ function MyComponent() {
           </div>
         );
       case 'tabs':
-      
-  return (
+        return (
           <div className="tab-content">
             <ComponentSection title="Horizontal Tabs">
               <div className="matrix-tabs">
@@ -2505,13 +2441,9 @@ function MyComponent() {
         );
       
       default:
-      
-  return <div>Select a component to view</div>;
-  
-  }
-
+        return <div>Select a component to view</div>;
+    }
   };
-
 
   return (
     <div className="matrix-component-test-page">
@@ -2520,17 +2452,16 @@ function MyComponent() {
         activeTab={activeTab}
         onTabChange={setActiveTab}
         tabs={sidebarTabs}
-        isExpanded={sidebarVisible}
-        onToggleExpand={() => setSidebarVisible(!sidebarVisible)}
+        isExpanded={sidebarExpanded}
+        onToggleExpand={() => setSidebarExpanded(!sidebarExpanded)}
       />
       
-      <div className={`matrix-content-wrapper ${sidebarVisible ? 'sidebar-expanded' : 'sidebar-collapsed'}`} 
+      <div className={`matrix-content-wrapper ${sidebarExpanded ? 'sidebar-expanded' : 'sidebar-collapsed'}`} 
       style={{ 
-        marginLeft: sidebarVisible ? '220px' : '60px',
+        marginLeft: sidebarExpanded ? '220px' : '60px',
         marginTop: '70px', // Add this line
         transition: 'margin-left var(--matrix-time-med) ease-in-out'
-    
-  }}>
+      }}>
             <Header
               navLinks={sidebarTabs}
               activeTab={activeTab}
