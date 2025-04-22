@@ -88,28 +88,28 @@ function ComponentTestPage() {
     { id: 'matrix-code', label: 'MATRIX CODE', icon: '⊟' },
   ];
   
-  // Glitch effect for access denied modal
-  useEffect(() => {
-    if (isModalOpen && activeModalType === 'access') {
-      const glitchInterval = setInterval(() => {
-  // Toggle sidebar visibility (mobile only)
-  const toggleSidebar = () => {
-    if (isMobile()) {
-      setSidebarVisible(!sidebarVisible);
-  
-  }
-
-  };
-        setGlitching(prev => !prev);
+    // Glitch effect for access denied modal
+    useEffect(() => {
+      if (isModalOpen && activeModalType === 'access') {
+        const glitchInterval = setInterval(() => {
+    // Toggle sidebar visibility (mobile only)
+    const toggleSidebar = () => {
+      if (isMobile()) {
+        setSidebarVisible(!sidebarVisible);
     
-  }, 300);
+    }
+  
+    };
+          setGlitching(prev => !prev);
       
+    }, 300);
+        
+      
+    return () => clearInterval(glitchInterval);
     
-  return () => clearInterval(glitchInterval);
+    }
   
-  }
-
-  }, [isModalOpen, activeModalType]);
+    }, [isModalOpen, activeModalType]);
 
   // Helper function to render a component card
   const ComponentSection = ({ title, children }) => (
@@ -2524,23 +2524,16 @@ function MyComponent() {
         onToggleExpand={() => setSidebarVisible(!sidebarVisible)}
       />
       
-      <div className={`matrix-content-wrapper ${sidebarVisible ? 'sidebar-expanded' : 'sidebar-collapsed'}`} 
-      style={{ 
-        marginLeft: sidebarVisible ? '220px' : '60px',
-        marginTop: '70px', // Add this line
-        transition: 'margin-left var(--matrix-time-med) ease-in-out'
-    
-  }}>
-            <Header
-              navLinks={sidebarTabs}
-              activeTab={activeTab}
-              onTabChange={setActiveTab}
-              className="matrix-header"
-            />
+      <div className={`matrix-content-wrapper ${sidebarVisible ? 'sidebar-expanded' : 'sidebar-collapsed'}`}>
+        <Header
+          navLinks={sidebarTabs}
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          className="matrix-header"
+        />
         <main className="test-page-content">
           {renderTabContent()}
         </main>
-
         <footer className="test-page-footer">
           <div className="scanner-line"></div>
           <p>Matrix CSS Component Library v1.0</p>
